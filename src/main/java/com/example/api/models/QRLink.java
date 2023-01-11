@@ -19,7 +19,10 @@ public class QRLink extends Persistence {
         this.isValid = false;
     }
 
-    public void verifyLink(){
+    public boolean verifyLink(){
         //TODO verify this.url link
+        this.isValid = true;
+
+        return this.isValid;
     }
 }

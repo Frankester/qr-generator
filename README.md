@@ -7,5 +7,5 @@
   - el tamaño de la imagen
   - el tipo (png, svg y pdf)
 - Si el link no existe, no genera el QR
-- En caso del png no se puede establecer un color de fondo, ya que no tiene
-
+- En caso de no configurar nada, el sistema usa una configuración por defecto
+- Para crear un QR se debe authenticar mediante Oauth2 de google
