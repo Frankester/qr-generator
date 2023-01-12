@@ -1,9 +1,13 @@
 package com.example.api.controllers;
 
 import com.example.api.exceptions.InvalidLinkException;
+import com.example.api.models.FileType;
 import com.example.api.models.QR;
 import com.example.api.models.QRLink;
 import com.example.api.models.dto.QrRequest;
+import com.example.api.models.qrGenerators.PdfQRGenerator;
+import com.example.api.models.qrGenerators.PngQRGenerator;
+import com.example.api.models.qrGenerators.SvgQRGenerator;
 import com.example.api.repositories.QrRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.RepositoryRestController;
@@ -33,12 +37,14 @@ public class QrControllerComplement {
             throw new InvalidLinkException("the link: "+qrLink.getUrl()+ " don't work", qrLink );
         }
 
-        QR qr = QR.builder()
-                .linkUrl(qrLink)
-                .typeFile(req.getTypeFile())
-                .QRColor(req.getQRColor())
-                .BGColor(req.getBGColor())
-                .build();
+        QR qr = new QR(
+                null,
+                qrLink,
+                req.getQRColor(),
+                req.getBGColor(),
+                req.getTypeFile(),
+                null
+        );
 
         qr.generateQR();
 

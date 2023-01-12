@@ -6,6 +6,8 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.net.URL;
+
 @Getter
 @Setter
 @Entity
@@ -20,8 +22,13 @@ public class QRLink extends Persistence {
     }
 
     public boolean verifyLink(){
-        //TODO verify this.url link
-        this.isValid = true;
+
+        try {
+            new URL(this.url).toURI();
+            this.isValid = true;
+        } catch (Exception e) {
+            this.isValid = false;
+        }
 
         return this.isValid;
     }

@@ -1,5 +1,9 @@
 package com.example.api.models;
 
+import com.example.api.models.qrGenerators.PdfQRGenerator;
+import com.example.api.models.qrGenerators.PngQRGenerator;
+import com.example.api.models.qrGenerators.QRGeneratorStrategy;
+import com.example.api.models.qrGenerators.SvgQRGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -11,7 +15,6 @@ import java.awt.*;
 @Getter
 @Setter
 @Entity
-@Builder
 public class QR extends Persistence {
 
     private String imageQR;
@@ -24,9 +27,9 @@ public class QR extends Persistence {
 
     private String BGColor;
 
-    @Enumerated(EnumType.STRING)
-    private FileType typeFile;
-
+    @Transient
+    @JsonIgnore
+    private QRGeneratorStrategy generator;
 
     @JsonIgnore
     @ManyToOne
@@ -39,21 +42,24 @@ public class QR extends Persistence {
         this.linkUrl = linkUrl;
         this.QRColor = QRColor;
         this.BGColor = BGColor;
-        this.typeFile = typeFile;
         this.user = user;
+
+        if(typeFile == FileType.PNG){
+            this.generator = new PngQRGenerator();
+        } else if(typeFile == FileType.SVG){
+            this.generator = new SvgQRGenerator();
+        } else {
+            this.generator = new PdfQRGenerator();
+        }
     }
 
     public QR(){
-
     }
 
     public void generateQR(){
-        //TODO generate QR code
         int colorBg = Color.decode(BGColor).getRGB();
         int colorQR = Color.decode(QRColor).getRGB();
 
-
-
-        this.imageQR = "/qrs/yourqr."+this.typeFile.toString().toLowerCase();
+        this.imageQR = generator.generateQR(colorBg, colorQR, linkUrl);
     }
 }

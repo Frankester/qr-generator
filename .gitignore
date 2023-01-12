@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### QRFiles ###
+!**/src/main/java/QR-Images/
