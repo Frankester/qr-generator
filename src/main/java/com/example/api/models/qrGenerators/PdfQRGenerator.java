@@ -1,6 +1,18 @@
 package com.example.api.models.qrGenerators;
 
 import com.example.api.models.QRLink;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+import net.glxn.qrgen.javase.QRCode;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class PdfQRGenerator implements QRGeneratorStrategy{
 
@@ -8,8 +20,45 @@ public class PdfQRGenerator implements QRGeneratorStrategy{
     @Override
     public String generateQR(int colorBg, int colorQR, QRLink linkUrl) {
 
-        //TODO implement  PDF generator
+        File file = QRCode
+                .from(linkUrl.getUrl())
+                .withColor(colorQR, colorBg)
+                .withErrorCorrection(ErrorCorrectionLevel.M)
+                .file();
 
-        return null;
+        String hashName = "qr-"+ RandomStringUtils.randomAlphabetic(7);
+
+        Path filePath = Paths
+                .get("src","main", "java", "QR-Images")
+                .resolve(hashName+".pdf");
+
+
+        try{
+            PDDocument pdfDoc = new PDDocument();
+
+            PDPage page = new PDPage();
+
+            pdfDoc.addPage(page);
+
+            PDImageXObject pdImage = PDImageXObject.createFromFile(file.getAbsolutePath(),pdfDoc);
+
+            PDPageContentStream contents = new PDPageContentStream(pdfDoc, page);
+
+            PDRectangle mediaBox = page.getMediaBox();
+
+            //center the qr image
+            float startX = (mediaBox.getWidth() - pdImage.getWidth()) / 2;
+            float startY = (mediaBox.getHeight() - pdImage.getHeight()) / 2;
+            contents.drawImage(pdImage, startX, startY);
+
+            contents.close();
+
+            pdfDoc.save(filePath.toFile());
+
+            return "/qrs/"+hashName;
+        }catch(Exception ex){
+            return null;
+        }
+
     }
 }
