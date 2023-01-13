@@ -18,10 +18,10 @@ public class SvgQRGenerator implements QRGeneratorStrategy {
     private final Logger log = LoggerFactory.getLogger(SvgQRGenerator.class);
 
     @Override
-    public String generateQR(int colorBg, int colorQR, QRLink linkUrl) {
+    public String generateQR(int colorBg, int colorQR, int size, QRLink linkUrl) {
 
 
-        String hashName = "qr-" +  RandomStringUtils.randomAlphabetic(7);
+        String hashName =  RandomStringUtils.randomAlphabetic(7);
 
         Path filePath = Paths
                 .get("src","main", "java", "QR-Images")
@@ -34,6 +34,7 @@ public class SvgQRGenerator implements QRGeneratorStrategy {
             QRCode
                     .from(linkUrl.getUrl())
                     .withColor(colorQR, colorBg)
+                    .withSize(size, size)
                     .withErrorCorrection(ErrorCorrectionLevel.M)
                     .svg(outs);
         } catch (Exception e) {

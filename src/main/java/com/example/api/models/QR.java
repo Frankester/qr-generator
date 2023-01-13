@@ -37,12 +37,16 @@ public class QR extends Persistence {
     private User user;
 
 
-    public QR(String imageQR, QRLink linkUrl, String QRColor, String BGColor, FileType typeFile, User user) {
+    private int size;
+
+
+    public QR(String imageQR, QRLink linkUrl, String QRColor, String BGColor, FileType typeFile,int size, User user) {
         this.imageQR = imageQR;
         this.linkUrl = linkUrl;
         this.QRColor = QRColor;
         this.BGColor = BGColor;
         this.user = user;
+        this.size = size;
 
         if(typeFile == FileType.PNG){
             this.generator = new PngQRGenerator();
@@ -60,6 +64,6 @@ public class QR extends Persistence {
         int colorBg = Color.decode(BGColor).getRGB();
         int colorQR = Color.decode(QRColor).getRGB();
 
-        this.imageQR = generator.generateQR(colorBg, colorQR, linkUrl);
+        this.imageQR = generator.generateQR(colorBg, colorQR, size, linkUrl);
     }
 }

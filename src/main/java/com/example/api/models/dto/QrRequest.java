@@ -12,6 +12,7 @@ public class QrRequest {
     private String QRColor;
     private String BGColor;
     private FileType typeFile;
+    private int size;
 
     public QrRequest(){
         this.QRColor= "#000000";

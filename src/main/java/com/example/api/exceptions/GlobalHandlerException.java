@@ -16,4 +16,11 @@ public class GlobalHandlerException {
         return ex.getLocalizedMessage();
     }
 
+    @ExceptionHandler(FileNotFoundException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    String keySiteInUse(FileNotFoundException ex){
+        return ex.getLocalizedMessage();
+    }
+
 }

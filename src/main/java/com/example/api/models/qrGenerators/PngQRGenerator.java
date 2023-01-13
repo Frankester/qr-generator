@@ -13,14 +13,15 @@ public class PngQRGenerator implements QRGeneratorStrategy{
 
 
     @Override
-    public String generateQR(int colorBg, int colorQR, QRLink linkUrl) {
+    public String generateQR(int colorBg, int colorQR, int size,  QRLink linkUrl) {
         File file = QRCode
                         .from(linkUrl.getUrl())
                         .withColor(colorQR, colorBg)
+                        .withSize(size, size)
                         .withErrorCorrection(ErrorCorrectionLevel.M)
                         .file();
 
-        String hashName = "qr-"+ RandomStringUtils.randomAlphabetic(7);
+        String hashName =  RandomStringUtils.randomAlphabetic(7);
 
         Path filePath = Paths
                 .get("src","main", "java", "QR-Images")
