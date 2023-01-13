@@ -19,7 +19,14 @@ public class GlobalHandlerException {
     @ExceptionHandler(FileNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String keySiteInUse(FileNotFoundException ex){
+    String fileNotFound(FileNotFoundException ex){
+        return ex.getLocalizedMessage();
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    String userAlreadyExists(UserAlreadyExistsException ex){
         return ex.getLocalizedMessage();
     }
 

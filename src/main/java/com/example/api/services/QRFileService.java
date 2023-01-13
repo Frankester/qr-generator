@@ -13,6 +13,7 @@ import java.io.File;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -35,7 +36,7 @@ public class QRFileService {
 
         Path foundFile = null;
 
-        for(File file : folder.listFiles()){
+        for(File file : Objects.requireNonNull(folder.listFiles())){
             if(file.isFile() && file.getName().startsWith(qrKey)){
                 foundFile = file.toPath();
             }
@@ -48,7 +49,6 @@ public class QRFileService {
     }
 
     public QR saveFile(QRLink qrLink, QrRequest req) {
-
 
         QR qr = new QR(
                 null,
