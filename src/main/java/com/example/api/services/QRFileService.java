@@ -1,12 +1,18 @@
 package com.example.api.services;
 
+import com.example.api.exceptions.AccesDeniedResourceException;
 import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.exceptions.InvalidLinkException;
 import com.example.api.models.QR;
 import com.example.api.models.QRLink;
+import com.example.api.models.User;
 import com.example.api.models.dto.QrRequest;
 import com.example.api.repositories.QrRepo;
+import com.example.api.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -23,13 +29,22 @@ public class QRFileService {
     @Autowired
     private QrRepo repo;
 
-    public File getQRFile(String qrKey) throws FileNotFoundException {
+    @Autowired
+    private UserRepo repoUsers;
+
+    public File getQRFile(String qrKey) throws FileNotFoundException, AccesDeniedResourceException {
 
         Optional<QR> qr = this.repo.findByImageQR("/qrs/"+qrKey);
 
         if(qr.isEmpty()){
             throw new FileNotFoundException("QR "+ qrKey+ " not found", qrKey);
         }
+
+        User currentUser = getUser();
+        if(!qr.get().getUser().equals(currentUser)){
+            throw new AccesDeniedResourceException("You are not the owner of this QR", currentUser);
+        }
+
 
         Path folderPath = Paths.get("src", "main", "java", "QR-Images");
         File folder = folderPath.toFile();
@@ -50,6 +65,8 @@ public class QRFileService {
 
     public QR saveFile(QRLink qrLink, QrRequest req) {
 
+
+
         QR qr = new QR(
                 null,
                 qrLink,
@@ -57,7 +74,7 @@ public class QRFileService {
                 req.getBGColor(),
                 req.getTypeFile(),
                 req.getSize(),
-                null
+                getUser()
         );
 
         //generate and store the qr file
@@ -66,6 +83,17 @@ public class QRFileService {
         this.repo.save(qr);
 
         return qr;
+    }
+
+    private User getUser(){
+        Authentication auth =SecurityContextHolder.getContext().getAuthentication() ;
+
+        org.springframework.security.core.userdetails.User userDetail =
+                (org.springframework.security.core.userdetails.User) auth.getPrincipal();
+
+        Optional<User> userOp = this.repoUsers.findByUsername(userDetail.getUsername());
+
+        return userOp.get();
     }
 
 }

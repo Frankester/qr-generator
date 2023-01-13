@@ -30,4 +30,11 @@ public class GlobalHandlerException {
         return ex.getLocalizedMessage();
     }
 
+    @ExceptionHandler(AccesDeniedResourceException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    String userAlreadyExists(AccesDeniedResourceException ex){
+        return ex.getLocalizedMessage();
+    }
+
 }

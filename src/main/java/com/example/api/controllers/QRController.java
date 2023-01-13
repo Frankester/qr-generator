@@ -1,5 +1,6 @@
 package com.example.api.controllers;
 
+import com.example.api.exceptions.AccesDeniedResourceException;
 import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.services.QRFileService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,8 @@ public class QRController {
     QRFileService qrService;
 
     @GetMapping("/qrs/{qrKey}")
-    public ResponseEntity<Object> getQR(@PathVariable("qrKey") String qrKey)
-            throws IOException, FileNotFoundException {
+    public ResponseEntity<Object> downloadQR(@PathVariable("qrKey") String qrKey)
+            throws IOException, FileNotFoundException, AccesDeniedResourceException {
 
 
         File file = qrService.getQRFile(qrKey);
