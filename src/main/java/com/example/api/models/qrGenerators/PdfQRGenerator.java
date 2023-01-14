@@ -1,5 +1,6 @@
 package com.example.api.models.qrGenerators;
 
+import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.models.QRLink;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import net.glxn.qrgen.javase.QRCode;
@@ -18,7 +19,7 @@ public class PdfQRGenerator implements QRGeneratorStrategy{
 
 
     @Override
-    public String generateQR(int colorBg, int colorQR, int size, QRLink linkUrl) {
+    public String generateQR(int colorBg, int colorQR, int size, QRLink linkUrl) throws Exception {
 
         File file = QRCode
                 .from(linkUrl.getUrl())
@@ -34,7 +35,7 @@ public class PdfQRGenerator implements QRGeneratorStrategy{
                 .resolve(hashName+".pdf");
 
 
-        try{
+
             PDDocument pdfDoc = new PDDocument();
 
             PDPage page = new PDPage();
@@ -57,9 +58,6 @@ public class PdfQRGenerator implements QRGeneratorStrategy{
             pdfDoc.save(filePath.toFile());
 
             return "/qrs/"+hashName;
-        }catch(Exception ex){
-            return null;
-        }
 
     }
 }

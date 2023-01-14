@@ -4,10 +4,7 @@ import com.example.api.models.QRLink;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import net.glxn.qrgen.javase.QRCode;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.nio.file.Path;
@@ -15,10 +12,9 @@ import java.nio.file.Paths;
 
 public class SvgQRGenerator implements QRGeneratorStrategy {
 
-    private final Logger log = LoggerFactory.getLogger(SvgQRGenerator.class);
 
     @Override
-    public String generateQR(int colorBg, int colorQR, int size, QRLink linkUrl) {
+    public String generateQR(int colorBg, int colorQR, int size, QRLink linkUrl) throws Exception {
 
 
         String hashName =  RandomStringUtils.randomAlphabetic(7);
@@ -28,7 +24,6 @@ public class SvgQRGenerator implements QRGeneratorStrategy {
                 .resolve(hashName+".svg");
 
 
-        try {
             OutputStream outs = new FileOutputStream(filePath.toFile());
 
             QRCode
@@ -37,13 +32,7 @@ public class SvgQRGenerator implements QRGeneratorStrategy {
                     .withSize(size, size)
                     .withErrorCorrection(ErrorCorrectionLevel.M)
                     .svg(outs);
-        } catch (Exception e) {
 
-            log.error( e.getClass()+ ": " +  e.getLocalizedMessage());
-
-            //on error return null
-            return null;
-        }
 
         return "/qrs/"+hashName;
     }

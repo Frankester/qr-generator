@@ -1,4 +1,4 @@
-#API QR GENERATOR
+# API QR GENERATOR
 - Genera una imagen del código QR
   - Lo genera mediante un link que se le debe pasar
 - Se le puede configurar:

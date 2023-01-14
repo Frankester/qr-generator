@@ -35,7 +35,7 @@ public class QrControllerComplement {
     @Transactional
     @PostMapping("/qrs")
     public @ResponseBody ResponseEntity<Object> createQR(@RequestBody QrRequest req)
-            throws InvalidLinkException {
+            throws Exception {
 
         QRLink qrLink = new QRLink();
         qrLink.setUrl(req.getLinkUrl());

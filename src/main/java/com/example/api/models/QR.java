@@ -60,7 +60,7 @@ public class QR extends Persistence {
     public QR(){
     }
 
-    public void generateQR(){
+    public void generateQR() throws Exception {
         int colorBg = Color.decode(BGColor).getRGB();
         int colorQR = Color.decode(QRColor).getRGB();
 

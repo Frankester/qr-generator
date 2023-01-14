@@ -63,7 +63,7 @@ public class QRFileService {
         return foundFile.toFile();
     }
 
-    public QR saveFile(QRLink qrLink, QrRequest req) {
+    public QR saveFile(QRLink qrLink, QrRequest req) throws Exception {
 
 
 
