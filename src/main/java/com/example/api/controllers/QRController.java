@@ -3,6 +3,7 @@ package com.example.api.controllers;
 import com.example.api.exceptions.AccesDeniedResourceException;
 import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.services.QRFileService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -19,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RestController
+@SecurityRequirement(name = "bearerAuth")
 public class QRController {
 
     @Autowired

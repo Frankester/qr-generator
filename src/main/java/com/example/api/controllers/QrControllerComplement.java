@@ -7,6 +7,7 @@ import com.example.api.models.QRLink;
 import com.example.api.models.dto.QrRequest;
 import com.example.api.repositories.QrRepo;
 import com.example.api.services.QRFileService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.InputStreamResource;
@@ -27,6 +28,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 @RepositoryRestController
+@SecurityRequirement(name = "bearerAuth")
 public class QrControllerComplement {
 
     @Autowired

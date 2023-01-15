@@ -4,6 +4,12 @@ import com.example.api.repositories.UserRepo;
 import com.example.api.security.jwt.JwtAuthEntryPoint;
 import com.example.api.security.jwt.JwtRequestFilter;
 import com.example.api.services.UserService;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.ExternalDocumentation;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.info.License;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +28,11 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@SecurityScheme(
+        type = SecuritySchemeType.HTTP,
+        name="bearerAuth",
+        scheme = "bearer"
+)
 public class SecurityConfig {
 
     @Autowired
@@ -42,12 +53,17 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/auth/**").permitAll()
+                                .requestMatchers("/v3/api-docs").permitAll()
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui.html").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
                                 .anyRequest().authenticated()
                 ).formLogin(Customizer.withDefaults())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authorizeFilter(), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
 
 
     @Bean
