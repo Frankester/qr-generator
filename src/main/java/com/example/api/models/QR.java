@@ -39,6 +39,8 @@ public class QR extends Persistence {
 
     private int size;
 
+    private boolean activo;
+
 
     public QR(String imageQR, QRLink linkUrl, String QRColor, String BGColor, FileType typeFile,int size, User user) {
         this.imageQR = imageQR;
@@ -47,6 +49,7 @@ public class QR extends Persistence {
         this.BGColor = BGColor;
         this.user = user;
         this.size = size;
+        this.activo = true;
 
         if(typeFile == FileType.PNG){
             this.generator = new PngQRGenerator();

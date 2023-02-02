@@ -40,6 +40,10 @@ public class QRFileService {
             throw new FileNotFoundException("QR "+ qrKey+ " not found", qrKey);
         }
 
+        if(!qr.get().isActivo()){
+            throw new FileNotFoundException("QR "+ qrKey+ " not found", qrKey);
+        }
+
         User currentUser = getUser();
         if(!qr.get().getUser().equals(currentUser)){
             throw new AccesDeniedResourceException("You are not the owner of this QR", currentUser);
@@ -94,6 +98,22 @@ public class QRFileService {
         Optional<User> userOp = this.repoUsers.findByUsername(userDetail.getUsername());
 
         return userOp.get();
+    }
+
+    public boolean deleteQR(String qrKey) throws FileNotFoundException {
+        Optional<QR> QrOp =this.repo.findByImageQR("/qrs/"+qrKey);
+
+        if(QrOp.isEmpty()){
+            throw new FileNotFoundException("QR "+ qrKey+ " not found", qrKey);
+        }
+
+        QR qr = QrOp.get();
+
+        qr.setActivo(false);
+
+        this.repo.save(qr);
+
+        return true;
     }
 
 }

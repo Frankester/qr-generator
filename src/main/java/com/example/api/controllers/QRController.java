@@ -9,6 +9,7 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,6 +48,16 @@ public class QRController {
         return ResponseEntity.ok()
                 .headers(httpHeaders)
                 .body(arr);
+    }
+
+    @DeleteMapping("/qrs/{qrKey}")
+    public ResponseEntity<Object> deleteQR(
+            @PathVariable("qrKey") String qrKey
+    ) throws FileNotFoundException {
+        if(this.qrService.deleteQR(qrKey)){
+            return ResponseEntity.ok("QR deleted with success");
+        }
+        return ResponseEntity.internalServerError().body("Something went wrong trying to delete the QR "+qrKey);
     }
 
 }
