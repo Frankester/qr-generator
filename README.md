@@ -1,41 +1,41 @@
-# QR GENERATOR API
-This is a API for generate your own's QR for the links that you want.
+# API GENERADOR DE QR
+Esta es una API para generar tus propios códigos QR para los enlaces que desees.
 
-You can cusomize the background and QR color, the size (in pixels) and the format of the QR output file.
-If you don't pass any configuration, the system will take a default configuration (see below).
-## Considerations
+Puedes personalizar el fondo y el color del QR, el tamaño (en píxeles) y el formato del archivo de salida del QR.  
+Si no proporcionas ninguna configuración, el sistema usará una configuración predeterminada (ver más abajo).
 
-Types of files allowed are: `PNG`(default)  `SVG` `PDF`
+## Consideraciones
 
-Colors must be in hexadecimal format (by default: the background `#FFFFFF` and the QR `#000000`)
+- Tipos de archivos permitidos: `PNG` (predeterminado), `SVG`, `PDF`
+- Los colores deben estar en formato hexadecimal (por defecto: fondo `#FFFFFF`, QR `#000000`)
+- El tamaño está en píxeles (por defecto: `125×125 px`)
 
-The size is in pixels (by default: `125x125 px`)
+# Ejecución local
 
-# Run Locally
- Clone the project
+Clona el proyecto
 ```bash
 $ git clone https://github.com/Frankester/qr-generator.git
 ```
-Go to the project directory
+Ve al directorio del proyecto
 ```bash
 $ cd qr-generator
 ```
-Start with docker compose
+Inicia con Docker Compose
 ```bash
 $ docker-compose up
 ```
 
-__*To see the API endpoints go to:*__
+__*Para ver los endpoints de la API, visita:*__
 ``http://localhost:8080/swagger-ui.html``
 
 
-# Tech Stack
+# Stack Tecnológico
 
-**Database:** Mysql
+**Base de datos:** Mysql
 
 **Spring Boot Starters:**  Web,  Data REST, Security, Data JPA
 
-**Documentation**: [Springdoc openapi](https://springdoc.org/v2/)
+**Documentación**: [Springdoc openapi](https://springdoc.org/v2/)
 
-**Authentication**: [JsonWebToken](https://github.com/jwtk/jjwt)
+**Autenticación**: [JsonWebToken](https://github.com/jwtk/jjwt)
 
