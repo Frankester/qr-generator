@@ -1,48 +1,53 @@
 package com.example.api.exceptions;
 
+import com.example.api.models.dto.ErrorResponse;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.util.HashMap;
+
 @ControllerAdvice
 public class GlobalHandlerException {
 
-    @ExceptionHandler(InvalidLinkException.class)
+    private ErrorResponse generateErrorResponse (Exception ex){
+        return new ErrorResponse(ex.getLocalizedMessage());
+    }
+
+    @ExceptionHandler({InvalidLinkException.class, UserAlreadyExistsException.class, InvalidQRPixelSizeException.class})
     @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String keySiteInUse(InvalidLinkException ex){
-        return ex.getLocalizedMessage();
+    ErrorResponse handleBadRequestExceptions(Exception ex){
+        return this.generateErrorResponse(ex);
     }
+
 
     @ExceptionHandler(FileNotFoundException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    String fileNotFound(FileNotFoundException ex){
-        return ex.getLocalizedMessage();
+    ErrorResponse fileNotFound(FileNotFoundException ex){
+        return this.generateErrorResponse(ex);
     }
 
-    @ExceptionHandler(UserAlreadyExistsException.class)
-    @ResponseBody
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    String userAlreadyExists(UserAlreadyExistsException ex){
-        return ex.getLocalizedMessage();
-    }
 
     @ExceptionHandler(AccesDeniedResourceException.class)
     @ResponseBody
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    String userAlreadyExists(AccesDeniedResourceException ex){
-        return ex.getLocalizedMessage();
+    ErrorResponse accesDeniedResource(AccesDeniedResourceException ex){
+        return this.generateErrorResponse(ex);
     }
 
-    @ExceptionHandler({ AuthenticationException.class })
+
+    @ExceptionHandler({ AuthenticationException.class, InsufficientAuthenticationException.class })
     @ResponseBody
     public ResponseEntity<Object> handleAuthenticationException(Exception ex) {
-
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ex.getLocalizedMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(this.generateErrorResponse(ex));
     }
 }

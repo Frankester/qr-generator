@@ -1,5 +1,6 @@
 package com.example.api.services;
 
+import com.example.api.config.MainConfiguration;
 import com.example.api.exceptions.AccesDeniedResourceException;
 import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.exceptions.InvalidLinkException;
@@ -7,6 +8,7 @@ import com.example.api.models.QR;
 import com.example.api.models.QRLink;
 import com.example.api.models.User;
 import com.example.api.models.dto.QrRequest;
+import com.example.api.models.qrGenerators.QRGeneratorStrategy;
 import com.example.api.repositories.QrRepo;
 import com.example.api.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,7 @@ public class QRFileService {
     @Autowired
     private UserRepo repoUsers;
 
+
     public File getQRFile(String qrKey) throws FileNotFoundException, AccesDeniedResourceException {
 
         Optional<QR> qr = this.repo.findByImageQR("/qrs/"+qrKey);
@@ -50,8 +53,7 @@ public class QRFileService {
         }
 
 
-        Path folderPath = Paths.get("src", "main", "java", "QR-Images");
-        File folder = folderPath.toFile();
+        File folder = MainConfiguration.getfolderQrFilesPath().toFile();
 
         Path foundFile = null;
 
@@ -69,15 +71,13 @@ public class QRFileService {
 
     public QR saveFile(QRLink qrLink, QrRequest req) throws Exception {
 
-
-
         QR qr = new QR(
                 null,
                 qrLink,
-                req.getQRColor(),
-                req.getBGColor(),
+                req.getQRColorRGB(),
+                req.getBGColorRGB(),
                 req.getTypeFile(),
-                req.getSize(),
+                req.getQRPixelSize(),
                 getUser()
         );
 

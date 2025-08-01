@@ -1,4 +1,3 @@
-version: '1.0'
 
 services:
   mysqldb:
@@ -24,7 +23,7 @@ services:
     restart: on-failure
     ports:
       - "8080:8080"
-    environment:    
+    environment:
       - SPRING.DATASOURCE.URL=jdbc:mysql://mysqldb:3306/qr-generator
       - SPRING.DATASOURCE.USERNAME=root
       - SPRING.DATASOURCE.PASSWORD=

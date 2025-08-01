@@ -1,5 +1,6 @@
 package com.example.api.models.qrGenerators;
 
+import com.example.api.config.MainConfiguration;
 import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.models.QRLink;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
@@ -10,6 +11,7 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -30,11 +32,7 @@ public class PdfQRGenerator implements QRGeneratorStrategy{
 
         String hashName = RandomStringUtils.randomAlphabetic(7);
 
-        Path filePath = Paths
-                .get("src","main", "java", "QR-Images")
-                .resolve(hashName+".pdf");
-
-
+        Path filePath = MainConfiguration.getfolderQrFilesPath().resolve(hashName+".pdf");
 
             PDDocument pdfDoc = new PDDocument();
 

@@ -2,6 +2,7 @@ package com.example.api.controllers;
 
 import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.exceptions.InvalidLinkException;
+import com.example.api.exceptions.InvalidQRPixelSizeException;
 import com.example.api.models.QR;
 import com.example.api.models.QRLink;
 import com.example.api.models.dto.QrRequest;
@@ -46,6 +47,10 @@ public class QrControllerComplement {
 
         if (!isValid){
             throw new InvalidLinkException("the link: "+qrLink.getUrl()+ " don't work", qrLink );
+        }
+        int size = req.getQRPixelSize();
+        if(size < 33){
+            throw new InvalidQRPixelSizeException("The QR code size in pixels must be at least 33 pixels, so it cannot be "+size+" pixels");
         }
 
         QR qr = this.qrService.saveFile(qrLink, req);

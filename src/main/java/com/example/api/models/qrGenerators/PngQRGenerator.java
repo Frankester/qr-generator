@@ -1,9 +1,12 @@
 package com.example.api.models.qrGenerators;
 
+import com.example.api.config.MainConfiguration;
 import com.example.api.models.QRLink;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import net.glxn.qrgen.javase.QRCode;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.io.File;
 import java.nio.file.Path;
@@ -23,8 +26,7 @@ public class PngQRGenerator implements QRGeneratorStrategy{
 
         String hashName =  RandomStringUtils.randomAlphabetic(7);
 
-        Path filePath = Paths
-                .get("src","main", "java", "QR-Images")
+        Path filePath = MainConfiguration.getfolderQrFilesPath()
                 .resolve(hashName+".png");
 
         boolean isSaved = file.renameTo(filePath.toFile());

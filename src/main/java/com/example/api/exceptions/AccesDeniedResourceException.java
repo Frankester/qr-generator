@@ -4,7 +4,7 @@ import com.example.api.models.User;
 import lombok.Getter;
 import lombok.Setter;
 
-public class AccesDeniedResourceException extends Throwable {
+public class AccesDeniedResourceException extends Exception {
 
     @Getter
     @Setter

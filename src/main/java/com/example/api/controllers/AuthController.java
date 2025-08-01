@@ -1,6 +1,7 @@
 package com.example.api.controllers;
 
 import com.example.api.exceptions.UserAlreadyExistsException;
+import com.example.api.models.dto.GenericMessageResponse;
 import com.example.api.models.dto.LoginDTO;
 import com.example.api.models.dto.RegisterDTO;
 import com.example.api.services.AuthenticationService;
@@ -30,7 +31,8 @@ public class AuthController {
 
         this.authService.register(registerReq);
 
-        return ResponseEntity.ok("User registered successfully");
+        GenericMessageResponse messageResponse = new GenericMessageResponse("User registered successfully");
+        return ResponseEntity.ok(messageResponse);
     }
 
 }

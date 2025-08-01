@@ -2,6 +2,8 @@ package com.example.api.controllers;
 
 import com.example.api.exceptions.AccesDeniedResourceException;
 import com.example.api.exceptions.FileNotFoundException;
+import com.example.api.models.dto.ErrorResponse;
+import com.example.api.models.dto.GenericMessageResponse;
 import com.example.api.services.QRFileService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +57,11 @@ public class QRController {
             @PathVariable("qrKey") String qrKey
     ) throws FileNotFoundException {
         if(this.qrService.deleteQR(qrKey)){
-            return ResponseEntity.ok("QR deleted with success");
+            GenericMessageResponse messageResponse = new GenericMessageResponse("QR deleted with success");
+            return ResponseEntity.ok(messageResponse);
         }
-        return ResponseEntity.internalServerError().body("Something went wrong trying to delete the QR "+qrKey);
+        ErrorResponse errorResponse = new ErrorResponse("Something went wrong trying to delete the QR "+qrKey);
+        return ResponseEntity.internalServerError().body(errorResponse);
     }
 
 }

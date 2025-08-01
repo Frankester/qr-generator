@@ -9,14 +9,14 @@ import lombok.Setter;
 public class QrRequest {
 
     private String linkUrl;
-    private String QRColor;
-    private String BGColor;
+    private String QRColorRGB;
+    private String BGColorRGB;
     private FileType typeFile;
-    private int size;
+    private int QRPixelSize;
 
     public QrRequest(){
-        this.QRColor= "#000000";
-        this.BGColor= "#FFFFFF";
+        this.QRColorRGB= "#000000";
+        this.BGColorRGB= "#FFFFFF";
         this.typeFile=FileType.PNG;
     }
 
