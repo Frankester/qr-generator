@@ -1,6 +1,7 @@
 package com.example.api.models.dto;
 
 import com.example.api.models.FileType;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 

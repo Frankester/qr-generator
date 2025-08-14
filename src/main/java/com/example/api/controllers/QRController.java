@@ -5,6 +5,12 @@ import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.models.dto.ErrorResponse;
 import com.example.api.models.dto.GenericMessageResponse;
 import com.example.api.services.QRFileService;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
@@ -19,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @RestController
 @SecurityRequirement(name = "bearerAuth")
@@ -29,12 +33,16 @@ public class QRController {
     @Autowired
     QRFileService qrService;
 
-    @GetMapping("/qrs/{qrKey}")
-    public ResponseEntity<Object> downloadQR(@PathVariable("qrKey") String qrKey)
+    @ApiResponses(value = @ApiResponse(responseCode = "200",
+            content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)))
+    @GetMapping("/qrs/{qrId}")
+    public ResponseEntity<Object> downloadQR(
+            @Parameter(content = @Content(examples = @ExampleObject(value = "1")))
+            @PathVariable("qrId")  String qrId)
             throws IOException, FileNotFoundException, AccesDeniedResourceException {
 
 
-        File file = qrService.getQRFile(qrKey);
+        File file = qrService.getQRFile(qrId);
 
         //cerate Http response
         FileInputStream resource = new FileInputStream(file);
@@ -52,15 +60,21 @@ public class QRController {
                 .body(arr);
     }
 
-    @DeleteMapping("/qrs/{qrKey}")
+    @ApiResponses(value = @ApiResponse(responseCode = "200",
+            content = @Content(examples = @ExampleObject(value = "{\n" +
+                    "  \"message\": \"QR deleted with success\"\n" +
+                    "}"),
+                    schema =@Schema(implementation =  GenericMessageResponse.class))))
+    @DeleteMapping("/qrs/{qrId}")
     public ResponseEntity<Object> deleteQR(
-            @PathVariable("qrKey") String qrKey
+            @Parameter(content = @Content(examples = @ExampleObject(value = "1")))
+            @PathVariable("qrId") String qrId
     ) throws FileNotFoundException {
-        if(this.qrService.deleteQR(qrKey)){
+        if(this.qrService.deleteQR(qrId)){
             GenericMessageResponse messageResponse = new GenericMessageResponse("QR deleted with success");
             return ResponseEntity.ok(messageResponse);
         }
-        ErrorResponse errorResponse = new ErrorResponse("Something went wrong trying to delete the QR "+qrKey);
+        ErrorResponse errorResponse = new ErrorResponse("Something went wrong trying to delete the QR "+qrId);
         return ResponseEntity.internalServerError().body(errorResponse);
     }
 
