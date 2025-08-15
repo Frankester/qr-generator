@@ -1,32 +1,22 @@
 package com.example.api.exceptions;
 
-import com.example.api.models.User;
-import lombok.Getter;
-import lombok.Setter;
 
 public class AccesDeniedResourceException extends Exception {
 
-    @Getter
-    @Setter
-    private User user;
 
-    public AccesDeniedResourceException(String message, User user) {
+    public AccesDeniedResourceException(String message) {
         super(message);
-        this.user = user;
     }
 
-    public AccesDeniedResourceException(String message, Throwable cause, User user) {
+    public AccesDeniedResourceException(String message, Throwable cause) {
         super(message, cause);
-        this.user = user;
     }
 
-    public AccesDeniedResourceException(Throwable cause, User user) {
+    public AccesDeniedResourceException(Throwable cause) {
         super(cause);
-        this.user = user;
     }
 
-    public AccesDeniedResourceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace, User user) {
+    public AccesDeniedResourceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
-        this.user = user;
     }
 }

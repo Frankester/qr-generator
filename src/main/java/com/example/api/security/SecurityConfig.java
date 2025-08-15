@@ -66,7 +66,7 @@ public class SecurityConfig {
                 ).formLogin(Customizer.withDefaults())
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(authorizeFilter(), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((exceptionHandlingConfigurer) ->
+                .exceptionHandling(exceptionHandlingConfigurer ->
                         exceptionHandlingConfigurer.authenticationEntryPoint(new JwtAuthEntryPoint()))
                 .build();
     }

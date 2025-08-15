@@ -10,9 +10,10 @@ import java.nio.file.Paths;
 @Configuration
 public class MainConfiguration {
 
-    private static final String QRFilesFolderName = "QRImages";
+    private static final String QR_FILES_FOLDER_NAME = "QRImages";
+
     public static Path getfolderQrFilesPath() throws DirectoryCreationException {
-        Path path = Paths.get(System.getProperty("user.dir"), QRFilesFolderName);
+        Path path = Paths.get(System.getProperty("user.dir"), QR_FILES_FOLDER_NAME);
         try {
             Files.createDirectories(path); // Crea la carpeta si no existe
         } catch (IOException e) {

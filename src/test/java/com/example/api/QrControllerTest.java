@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class QrControllerTest {
+class QrControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -42,26 +42,26 @@ public class QrControllerTest {
 
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
         this.authUtils  = new AuthUtils(this.mockMvc);
         authUtils.registerUserTest();
         this.token = authUtils.loginUserTest();
     }
 
     @AfterEach
-    public void deleteFiles() {
+    void deleteFiles() {
         FileCleaner.cleanFolder("QRImages");
     }
 
     @Test
-    public void whenCreateAQR_shouldSucceed() throws Exception {
+    void whenCreateAQR_shouldSucceed() throws Exception {
 
         QrRequest request = new QrRequest();
         request.setLinkUrl(linkTest);
-        request.setQRPixelSize(qrPizelSizeTest);
+        request.setQrPixelSize(qrPizelSizeTest);
         request.setTypeFile(qrFileTypeTest);
-        request.setBGColorRGB(qrBGColorRGBTest);
-        request.setQRColorRGB(qrColorRGBTest);
+        request.setBgColorRGB(qrBGColorRGBTest);
+        request.setQrColorRGB(qrColorRGBTest);
 
         this.mockMvc.perform(post("/qrs")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -73,14 +73,14 @@ public class QrControllerTest {
     }
 
     @Test
-    public void whenCreateAQRWithInvalidLink_shouldFail() throws Exception {
+    void whenCreateAQRWithInvalidLink_shouldFail() throws Exception {
 
         QrRequest request = new QrRequest();
         request.setLinkUrl(linkFailTest);
-        request.setQRPixelSize(qrPizelSizeTest);
+        request.setQrPixelSize(qrPizelSizeTest);
         request.setTypeFile(qrFileTypeTest);
-        request.setBGColorRGB(qrBGColorRGBTest);
-        request.setQRColorRGB(qrColorRGBTest);
+        request.setBgColorRGB(qrBGColorRGBTest);
+        request.setQrColorRGB(qrColorRGBTest);
 
         this.mockMvc.perform(post("/qrs")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -92,14 +92,14 @@ public class QrControllerTest {
     }
 
     @Test
-    public void whenCreateAQRWithInvalidSize_shouldFail() throws Exception {
+    void whenCreateAQRWithInvalidSize_shouldFail() throws Exception {
 
         QrRequest request = new QrRequest();
         request.setLinkUrl(linkTest);
-        request.setQRPixelSize(qrPizelSizeFailTest);
+        request.setQrPixelSize(qrPizelSizeFailTest);
         request.setTypeFile(qrFileTypeTest);
-        request.setBGColorRGB(qrBGColorRGBTest);
-        request.setQRColorRGB(qrColorRGBTest);
+        request.setBgColorRGB(qrBGColorRGBTest);
+        request.setQrColorRGB(qrColorRGBTest);
 
         this.mockMvc.perform(post("/qrs")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -111,14 +111,14 @@ public class QrControllerTest {
     }
 
     @Test
-    public void whenAccessToAExistentQR_shouldSucceed() throws Exception {
+    void whenAccessToAExistentQR_shouldSucceed() throws Exception {
 
         QrRequest request = new QrRequest();
         request.setLinkUrl(linkTest);
-        request.setQRPixelSize(qrPizelSizeTest);
+        request.setQrPixelSize(qrPizelSizeTest);
         request.setTypeFile(qrFileTypeTest);
-        request.setBGColorRGB(qrBGColorRGBTest);
-        request.setQRColorRGB(qrColorRGBTest);
+        request.setBgColorRGB(qrBGColorRGBTest);
+        request.setQrColorRGB(qrColorRGBTest);
 
         // cerate a QR
         MvcResult result = this.mockMvc.perform(post("/qrs")
@@ -127,7 +127,6 @@ public class QrControllerTest {
                 .header("Authorization", "Bearer "+ this.token))
                 .andReturn();
 
-        ObjectMapper objectMapper = new ObjectMapper();
         JsonNode responseNode = objectMapper.readTree(result.getResponse().getContentAsString());
         String imageQRLink = responseNode.get("imageQR").asText();
 
@@ -138,7 +137,7 @@ public class QrControllerTest {
     }
 
     @Test
-    public void whenAccessToANonExistentQR_shouldFail() throws Exception {
+    void whenAccessToANonExistentQR_shouldFail() throws Exception {
 
         this.mockMvc.perform(get("/qrs/"+nonExistentQrKey)
                         .header("Authorization", "Bearer "+ this.token))
@@ -148,14 +147,14 @@ public class QrControllerTest {
     }
 
     @Test
-    public void whenDeleteAValidQR_shouldSucceed() throws Exception{
+    void whenDeleteAValidQR_shouldSucceed() throws Exception{
 
         QrRequest request = new QrRequest();
         request.setLinkUrl(linkTest);
-        request.setQRPixelSize(qrPizelSizeTest);
+        request.setQrPixelSize(qrPizelSizeTest);
         request.setTypeFile(qrFileTypeTest);
-        request.setBGColorRGB(qrBGColorRGBTest);
-        request.setQRColorRGB(qrColorRGBTest);
+        request.setBgColorRGB(qrBGColorRGBTest);
+        request.setQrColorRGB(qrColorRGBTest);
 
 
         MvcResult result = this.mockMvc.perform(post("/qrs")
@@ -174,7 +173,7 @@ public class QrControllerTest {
     }
 
     @Test
-    public void whenDeleteANonValidQR_shouldFail() throws Exception{
+    void whenDeleteANonValidQR_shouldFail() throws Exception{
 
         this.mockMvc.perform(delete("/qrs/"+nonExistentQrKey)
                         .header("Authorization", "Bearer "+ this.token))

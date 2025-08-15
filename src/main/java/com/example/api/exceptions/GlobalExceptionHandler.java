@@ -1,8 +1,6 @@
 package com.example.api.exceptions;
 
 import com.example.api.models.dto.ErrorResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
@@ -12,10 +10,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import java.util.HashMap;
-
 @ControllerAdvice
-public class GlobalHandlerException {
+public class GlobalExceptionHandler {
 
     private ErrorResponse generateErrorResponse (Exception ex){
         return new ErrorResponse(ex.getLocalizedMessage());

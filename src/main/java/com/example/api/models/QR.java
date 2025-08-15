@@ -1,5 +1,6 @@
 package com.example.api.models;
 
+import com.example.api.exceptions.DirectoryCreationException;
 import com.example.api.models.qrgenerators.PdfQRGenerator;
 import com.example.api.models.qrgenerators.PngQRGenerator;
 import com.example.api.models.qrgenerators.QRGeneratorStrategy;
@@ -10,6 +11,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.awt.*;
+import java.io.IOException;
 
 @Getter
 @Setter
@@ -22,9 +24,9 @@ public class QR extends Persistence {
     @JoinColumn(name = "id_link", referencedColumnName = "id")
     private QRLink linkUrl;
 
-    private String QRColorRGB;
+    private String qrColorRGB;
 
-    private String BGColorRGB;
+    private String bgColorRGB;
 
     @Transient
     @JsonIgnore
@@ -41,11 +43,11 @@ public class QR extends Persistence {
     private boolean activo;
 
 
-    public QR(String imageQR, QRLink linkUrl, String QRColor, String BGColor, FileType typeFile,int size, User user) {
+    public QR(String imageQR, QRLink linkUrl, String qrColor, String bgColor, FileType typeFile,int size, User user) {
         this.imageQR = imageQR;
         this.linkUrl = linkUrl;
-        this.QRColorRGB = QRColor;
-        this.BGColorRGB = BGColor;
+        this.qrColorRGB = qrColor;
+        this.bgColorRGB = bgColor;
         this.user = user;
         this.size = size;
         this.activo = true;
@@ -62,9 +64,9 @@ public class QR extends Persistence {
     public QR(){
     }
 
-    public void generateQR() throws Exception {
-        int colorBg = Color.decode(BGColorRGB).getRGB();
-        int colorQR = Color.decode(QRColorRGB).getRGB();
+    public void generateQR() throws DirectoryCreationException, IOException {
+        int colorBg = Color.decode(bgColorRGB).getRGB();
+        int colorQR = Color.decode(qrColorRGB).getRGB();
 
         this.imageQR = generator.generateQR(colorBg, colorQR, size, linkUrl);
     }

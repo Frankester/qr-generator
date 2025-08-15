@@ -1,7 +1,6 @@
 package com.example.api.repositories;
 
 import com.example.api.models.QR;
-import com.example.api.models.QRLink;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;

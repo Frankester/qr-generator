@@ -2,13 +2,11 @@ package com.example.api.exceptions;
 
 
 import lombok.Getter;
-import lombok.Setter;
 
 public class FileNotFoundException extends Exception {
 
     @Getter
-    @Setter
-    private String qrString;
+    private final String qrString;
 
     public FileNotFoundException(String message, String qrString) {
         super(message);

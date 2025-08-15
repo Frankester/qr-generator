@@ -1,6 +1,7 @@
 package com.example.api.models.qrgenerators;
 
 import com.example.api.config.MainConfiguration;
+import com.example.api.exceptions.DirectoryCreationException;
 import com.example.api.models.QRLink;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import net.glxn.qrgen.javase.QRCode;
@@ -11,6 +12,7 @@ import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 
 public class PdfQRGenerator implements QRGeneratorStrategy{
@@ -18,7 +20,7 @@ public class PdfQRGenerator implements QRGeneratorStrategy{
 
 
     @Override
-    public String generateQR(int colorBg, int colorQR, int size, QRLink linkUrl) throws Exception {
+    public String generateQR(int colorBg, int colorQR, int size, QRLink linkUrl)throws DirectoryCreationException, IOException {
 
         File file = QRCode
                 .from(linkUrl.getUrl())

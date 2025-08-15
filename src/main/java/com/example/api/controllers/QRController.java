@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
@@ -33,6 +35,7 @@ public class QRController {
 
 
     private final QRFileService qrService;
+    private final Logger logger = LoggerFactory.getLogger(QRController.class);
 
     @Autowired
     public QRController(QRFileService qrService){
@@ -54,7 +57,10 @@ public class QRController {
         byte[] arr;
         try(FileInputStream resource = new FileInputStream(file)){
             arr= new byte[(int)file.length()];
-            resource.read(arr);
+            int bytesStreamCount = resource.read(arr);
+            if(bytesStreamCount != -1){
+                logger.warn("Couldn't read all the file, only {} bytes", bytesStreamCount);
+            }
         }
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -67,9 +73,11 @@ public class QRController {
     }
 
     @ApiResponses(value = @ApiResponse(responseCode = "200",
-            content = @Content(examples = @ExampleObject(value = "{\n" +
-                    "  \"message\": \"QR deleted with success\"\n" +
-                    "}"),
+            content = @Content(examples = @ExampleObject(value = """
+                    {
+                      "message": "QR deleted with success"
+                    }
+                    """),
                     schema =@Schema(implementation =  GenericMessageResponse.class))))
     @DeleteMapping("/qrs/{qrId}")
     public ResponseEntity<Object> deleteQR(

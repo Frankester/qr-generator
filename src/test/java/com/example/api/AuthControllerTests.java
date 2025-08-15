@@ -26,12 +26,12 @@ class AuthControllerTests {
 
 
 	@BeforeEach
-	public void setUp (){
+	void setUp (){
 		this.authUtils  = new AuthUtils(this.mockMvc);
 	}
 
 	@Test
-	public void whenUserAccessHelloWithoutLogin_shouldBeUnauthorized() throws Exception {
+	void whenUserAccessHelloWithoutLogin_shouldBeUnauthorized() throws Exception {
 		this.mockMvc.perform(get("/qrs"))
 				.andExpect(status().isUnauthorized())
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -39,9 +39,7 @@ class AuthControllerTests {
 	}
 
 	@Test
-	public void whenUserAccessHelloWithLogin_shouldSucceed() throws Exception {
-		ObjectMapper objectMapper = new ObjectMapper();
-
+	void whenUserAccessHelloWithLogin_shouldSucceed() throws Exception {
 		authUtils.registerUserTest();
 
 		String token = authUtils.loginUserTest();
@@ -53,7 +51,7 @@ class AuthControllerTests {
 	}
 
 	@Test
-	public void whenUserRegisterWithAnExistentUsername_shouldFail() throws Exception {
+	void whenUserRegisterWithAnExistentUsername_shouldFail() throws Exception {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		authUtils.registerUserTest();

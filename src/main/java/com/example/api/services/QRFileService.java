@@ -49,7 +49,7 @@ public class QRFileService {
 
         User currentUser = getUser();
         if(!qr.get().getUser().equals(currentUser)){
-            throw new AccesDeniedResourceException("You are not the owner of this QR", currentUser);
+            throw new AccesDeniedResourceException("You are not the owner of this QR");
         }
 
 
@@ -74,10 +74,10 @@ public class QRFileService {
         QR qr = new QR(
                 null,
                 qrLink,
-                req.getQRColorRGB(),
-                req.getBGColorRGB(),
+                req.getQrColorRGB(),
+                req.getBgColorRGB(),
                 req.getTypeFile(),
-                req.getQRPixelSize(),
+                req.getQrPixelSize(),
                 getUser()
         );
 
@@ -106,13 +106,13 @@ public class QRFileService {
     }
 
     public boolean deleteQR(String qrKey) throws FileNotFoundException {
-        Optional<QR> QrOp =this.repo.findByImageQR("/qrs/"+qrKey);
+        Optional<QR> qrOp =this.repo.findByImageQR("/qrs/"+qrKey);
 
-        if(QrOp.isEmpty()){
+        if(qrOp.isEmpty()){
             throw new FileNotFoundException("QR "+ qrKey+ " not found", qrKey);
         }
 
-        QR qr = QrOp.get();
+        QR qr = qrOp.get();
 
         qr.setActivo(false);
 

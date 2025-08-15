@@ -1,7 +1,6 @@
 package com.example.api.models.dto;
 
 import com.example.api.models.FileType;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,14 +9,14 @@ import lombok.Setter;
 public class QrRequest {
 
     private String linkUrl;
-    private String QRColorRGB;
-    private String BGColorRGB;
+    private String qrColorRGB;
+    private String bgColorRGB;
     private FileType typeFile;
-    private int QRPixelSize;
+    private int qrPixelSize;
 
     public QrRequest(){
-        this.QRColorRGB= "#000000";
-        this.BGColorRGB= "#FFFFFF";
+        this.qrColorRGB = "#000000";
+        this.bgColorRGB = "#FFFFFF";
         this.typeFile=FileType.PNG;
     }
 

@@ -5,6 +5,8 @@ import java.nio.file.Paths;
 
 public class FileCleaner {
 
+    private FileCleaner(){}
+
     public static void cleanFolder(String folderName){
         File folderQrs =  Paths
                 .get("src","main", "java", folderName)

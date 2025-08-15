@@ -36,9 +36,9 @@ public class QrControllerComplement {
         boolean isValid = qrLink.verifyLink();
 
         if (!isValid){
-            throw new InvalidLinkException("the link: "+qrLink.getUrl()+ " don't work", qrLink );
+            throw new InvalidLinkException("the link: "+qrLink.getUrl()+ " don't work" );
         }
-        int size = req.getQRPixelSize();
+        int size = req.getQrPixelSize();
         if(size < 33){
             throw new InvalidQRPixelSizeException("The QR code size in pixels must be at least 33 pixels, so it cannot be "+size+" pixels");
         }
