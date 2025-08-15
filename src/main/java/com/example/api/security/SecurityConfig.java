@@ -54,7 +54,7 @@ public class SecurityConfig {
 
         return http.
                 cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable) // NOSONAR Justificación: API usa JWT no cookies
+                .csrf(AbstractHttpConfigurer::disable) // NOSONAR Justification: API use JWT not cookies
                 .authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/auth/**").permitAll()

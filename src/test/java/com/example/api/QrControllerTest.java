@@ -169,7 +169,7 @@ class QrControllerTest {
                 .header("Authorization", "Bearer "+ this.token))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.message").value("QR deleted with success"));
+                .andExpect(jsonPath("$.message").value("QR deleted successfully"));
     }
 
     @Test

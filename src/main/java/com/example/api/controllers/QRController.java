@@ -46,7 +46,7 @@ public class QRController {
             content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)))
     @GetMapping("/qrs/{qrId}")
     public ResponseEntity<Object> downloadQR(
-            @Parameter(content = @Content(examples = @ExampleObject(value = "1")))
+            @Parameter(content = @Content(examples = @ExampleObject(value = "aGQHEGs")))
             @PathVariable("qrId")  String qrId)
             throws IOException, FileNotFoundException, AccesDeniedResourceException, DirectoryCreationException {
 
@@ -59,7 +59,7 @@ public class QRController {
             arr= new byte[(int)file.length()];
             int bytesStreamCount = resource.read(arr);
             if(bytesStreamCount != -1){
-                logger.warn("Couldn't read all the file, only {} bytes", bytesStreamCount);
+                logger.info("{} bytes were read from the file {}", bytesStreamCount, file.getName());
             }
         }
 
@@ -75,20 +75,20 @@ public class QRController {
     @ApiResponses(value = @ApiResponse(responseCode = "200",
             content = @Content(examples = @ExampleObject(value = """
                     {
-                      "message": "QR deleted with success"
+                      "message": "QR deleted successfully"
                     }
                     """),
                     schema =@Schema(implementation =  GenericMessageResponse.class))))
     @DeleteMapping("/qrs/{qrId}")
     public ResponseEntity<Object> deleteQR(
-            @Parameter(content = @Content(examples = @ExampleObject(value = "1")))
+            @Parameter(content = @Content(examples = @ExampleObject(value = "aGQHEGs")))
             @PathVariable("qrId") String qrId
     ) throws FileNotFoundException {
         if(this.qrService.deleteQR(qrId)){
-            GenericMessageResponse messageResponse = new GenericMessageResponse("QR deleted with success");
+            GenericMessageResponse messageResponse = new GenericMessageResponse("QR deleted successfully");
             return ResponseEntity.ok(messageResponse);
         }
-        ErrorResponse errorResponse = new ErrorResponse("Something went wrong trying to delete the QR "+qrId);
+        ErrorResponse errorResponse = new ErrorResponse("Something went wrong when attempting to delete the QR "+qrId);
         return ResponseEntity.internalServerError().body(errorResponse);
     }
 

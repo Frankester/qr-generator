@@ -15,9 +15,9 @@ public class MainConfiguration {
     public static Path getfolderQrFilesPath() throws DirectoryCreationException {
         Path path = Paths.get(System.getProperty("user.dir"), QR_FILES_FOLDER_NAME);
         try {
-            Files.createDirectories(path); // Crea la carpeta si no existe
+            Files.createDirectories(path); // Create the folder if it does not exist
         } catch (IOException e) {
-            throw new DirectoryCreationException("No se pudo crear carpeta: " + path);
+            throw new DirectoryCreationException("Unable to create folder: " + path);
         }
         return path;
     }

@@ -36,11 +36,11 @@ public class QrControllerComplement {
         boolean isValid = qrLink.verifyLink();
 
         if (!isValid){
-            throw new InvalidLinkException("the link: "+qrLink.getUrl()+ " don't work" );
+            throw new InvalidLinkException("The link "+qrLink.getUrl()+ " does not work or is not a valid link" );
         }
         int size = req.getQrPixelSize();
         if(size < 33){
-            throw new InvalidQRPixelSizeException("The QR code size in pixels must be at least 33 pixels, so it cannot be "+size+" pixels");
+            throw new InvalidQRPixelSizeException("The size of the QR code must be at least 33 pixels; it cannot be "+size+" pixels");
         }
 
         QR qr = this.qrService.saveFile(qrLink, req);
