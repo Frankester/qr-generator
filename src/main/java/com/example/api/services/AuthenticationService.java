@@ -17,17 +17,23 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthenticationService {
 
-    @Autowired
-    private UserRepo repo;
+    private final UserRepo repo;
+
+
+    private final JwtUtil jwtUtils;
+
+
+    private final AuthenticationManager authManager;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JwtUtil jwtUtils;
-
-    @Autowired
-    private AuthenticationManager authManager;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AuthenticationService(UserRepo repo, JwtUtil jwtUtils, AuthenticationManager authManager, PasswordEncoder passwordEncoder) {
+        this.repo = repo;
+        this.jwtUtils = jwtUtils;
+        this.authManager = authManager;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     public void register(RegisterDTO registerReq) throws UserAlreadyExistsException {
         if(this.repo.existsByUsername(registerReq.getUsername())){

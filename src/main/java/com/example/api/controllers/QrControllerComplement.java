@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.*;
 @SecurityRequirement(name = "bearerAuth")
 public class QrControllerComplement {
 
+
+    private final QRFileService qrService;
+
     @Autowired
-    QRFileService qrService;
+    public QrControllerComplement(QRFileService qrService){
+        this.qrService = qrService;
+    }
 
     @Transactional
     @PostMapping("/qrs")

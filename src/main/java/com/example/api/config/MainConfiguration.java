@@ -1,9 +1,9 @@
 package com.example.api.config;
 
-import org.springframework.context.annotation.Bean;
+import com.example.api.exceptions.DirectoryCreationException;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
-
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -11,8 +11,13 @@ import java.nio.file.Paths;
 public class MainConfiguration {
 
     private static final String QRFilesFolderName = "QRImages";
-    public static Path getfolderQrFilesPath(){
-      return Paths
-              .get("src","main", "java", QRFilesFolderName);
+    public static Path getfolderQrFilesPath() throws DirectoryCreationException {
+        Path path = Paths.get(System.getProperty("user.dir"), QRFilesFolderName);
+        try {
+            Files.createDirectories(path); // Crea la carpeta si no existe
+        } catch (IOException e) {
+            throw new DirectoryCreationException("No se pudo crear carpeta: " + path);
+        }
+        return path;
     }
 }

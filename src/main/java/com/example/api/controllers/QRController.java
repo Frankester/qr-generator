@@ -1,6 +1,7 @@
 package com.example.api.controllers;
 
 import com.example.api.exceptions.AccesDeniedResourceException;
+import com.example.api.exceptions.DirectoryCreationException;
 import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.models.dto.ErrorResponse;
 import com.example.api.models.dto.GenericMessageResponse;
@@ -30,8 +31,13 @@ import java.io.IOException;
 @SecurityRequirement(name = "bearerAuth")
 public class QRController {
 
+
+    private final QRFileService qrService;
+
     @Autowired
-    QRFileService qrService;
+    public QRController(QRFileService qrService){
+        this.qrService = qrService;
+    }
 
     @ApiResponses(value = @ApiResponse(responseCode = "200",
             content = @Content(mediaType = MediaType.APPLICATION_OCTET_STREAM_VALUE)))
@@ -39,17 +45,17 @@ public class QRController {
     public ResponseEntity<Object> downloadQR(
             @Parameter(content = @Content(examples = @ExampleObject(value = "1")))
             @PathVariable("qrId")  String qrId)
-            throws IOException, FileNotFoundException, AccesDeniedResourceException {
+            throws IOException, FileNotFoundException, AccesDeniedResourceException, DirectoryCreationException {
 
 
         File file = qrService.getQRFile(qrId);
 
         //cerate Http response
-        FileInputStream resource = new FileInputStream(file);
-        byte[] arr = new byte[(int)file.length()];
-
-        resource.read(arr);
-        resource.close();
+        byte[] arr;
+        try(FileInputStream resource = new FileInputStream(file)){
+            arr= new byte[(int)file.length()];
+            resource.read(arr);
+        }
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE);

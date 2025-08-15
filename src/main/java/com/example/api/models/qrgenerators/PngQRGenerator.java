@@ -1,22 +1,22 @@
-package com.example.api.models.qrGenerators;
+package com.example.api.models.qrgenerators;
 
 import com.example.api.config.MainConfiguration;
+import com.example.api.exceptions.DirectoryCreationException;
 import com.example.api.models.QRLink;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import net.glxn.qrgen.javase.QRCode;
-import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class PngQRGenerator implements QRGeneratorStrategy{
 
+    private final Logger logger = LoggerFactory.getLogger(PngQRGenerator.class);
 
     @Override
-    public String generateQR(int colorBg, int colorQR, int size,  QRLink linkUrl) {
+    public String generateQR(int colorBg, int colorQR, int size,  QRLink linkUrl) throws DirectoryCreationException {
         File file = QRCode
                         .from(linkUrl.getUrl())
                         .withColor(colorQR, colorBg)
@@ -24,7 +24,8 @@ public class PngQRGenerator implements QRGeneratorStrategy{
                         .withErrorCorrection(ErrorCorrectionLevel.M)
                         .file();
 
-        String hashName =  RandomStringUtils.randomAlphabetic(7);
+        String hashName =  RandomHashGenerator.generateRandomHashName();
+
 
         Path filePath = MainConfiguration.getfolderQrFilesPath()
                 .resolve(hashName+".png");
@@ -32,9 +33,12 @@ public class PngQRGenerator implements QRGeneratorStrategy{
         boolean isSaved = file.renameTo(filePath.toFile());
 
         if(isSaved){
+            logger.info("Archivo guardado exitosamente!!");
             return "/qrs/"+hashName;
+        } else {
+            logger.error("No se pudo guardar el archivo en la carpeta de QRs configurada!!");
+            return null;
         }
 
-        return null;
     }
 }

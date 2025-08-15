@@ -1,4 +1,4 @@
-package com.example.api.models.qrGenerators;
+package com.example.api.models.qrgenerators;
 
 import com.example.api.models.QRLink;
 

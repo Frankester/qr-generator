@@ -18,8 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AuthController {
 
+
+    private final AuthenticationService authService;
+
     @Autowired
-    AuthenticationService authService;
+    public AuthController(AuthenticationService authService){
+        this.authService = authService;
+    }
 
 
     @ApiResponses(value = {@ApiResponse(responseCode = "200",

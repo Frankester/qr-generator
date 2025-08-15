@@ -1,9 +1,9 @@
 package com.example.api.models;
 
-import com.example.api.models.qrGenerators.PdfQRGenerator;
-import com.example.api.models.qrGenerators.PngQRGenerator;
-import com.example.api.models.qrGenerators.QRGeneratorStrategy;
-import com.example.api.models.qrGenerators.SvgQRGenerator;
+import com.example.api.models.qrgenerators.PdfQRGenerator;
+import com.example.api.models.qrgenerators.PngQRGenerator;
+import com.example.api.models.qrgenerators.QRGeneratorStrategy;
+import com.example.api.models.qrgenerators.SvgQRGenerator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;

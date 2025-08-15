@@ -1,23 +1,20 @@
-package com.example.api.models.qrGenerators;
+package com.example.api.models.qrgenerators;
 
 import com.example.api.config.MainConfiguration;
-import com.example.api.exceptions.FileNotFoundException;
 import com.example.api.models.QRLink;
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import net.glxn.qrgen.javase.QRCode;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class PdfQRGenerator implements QRGeneratorStrategy{
+
 
 
     @Override
@@ -30,7 +27,9 @@ public class PdfQRGenerator implements QRGeneratorStrategy{
                 .withErrorCorrection(ErrorCorrectionLevel.M)
                 .file();
 
-        String hashName = RandomStringUtils.randomAlphabetic(7);
+
+        String hashName = RandomHashGenerator.generateRandomHashName();
+
 
         Path filePath = MainConfiguration.getfolderQrFilesPath().resolve(hashName+".pdf");
 

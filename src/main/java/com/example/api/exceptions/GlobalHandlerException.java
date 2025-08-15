@@ -50,4 +50,11 @@ public class GlobalHandlerException {
     public ResponseEntity<Object> handleAuthenticationException(Exception ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(this.generateErrorResponse(ex));
     }
+
+    @ExceptionHandler(DirectoryCreationException.class)
+    @ResponseBody
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleDirectoryCreationException(DirectoryCreationException ex){
+        return this.generateErrorResponse(ex);
+    }
 }

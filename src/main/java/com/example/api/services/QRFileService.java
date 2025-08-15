@@ -2,25 +2,22 @@ package com.example.api.services;
 
 import com.example.api.config.MainConfiguration;
 import com.example.api.exceptions.AccesDeniedResourceException;
+import com.example.api.exceptions.DirectoryCreationException;
 import com.example.api.exceptions.FileNotFoundException;
-import com.example.api.exceptions.InvalidLinkException;
 import com.example.api.models.QR;
 import com.example.api.models.QRLink;
 import com.example.api.models.User;
 import com.example.api.models.dto.QrRequest;
-import com.example.api.models.qrGenerators.QRGeneratorStrategy;
 import com.example.api.repositories.QrRepo;
 import com.example.api.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -28,14 +25,17 @@ import java.util.Optional;
 public class QRFileService {
 
 
-    @Autowired
-    private QrRepo repo;
+    private final QrRepo repo;
+
+    private final UserRepo repoUsers;
 
     @Autowired
-    private UserRepo repoUsers;
+    public QRFileService(QrRepo repo, UserRepo repoUsers) {
+        this.repo = repo;
+        this.repoUsers = repoUsers;
+    }
 
-
-    public File getQRFile(String qrKey) throws FileNotFoundException, AccesDeniedResourceException {
+    public File getQRFile(String qrKey) throws FileNotFoundException, AccesDeniedResourceException, DirectoryCreationException {
 
         Optional<QR> qr = this.repo.findByImageQR("/qrs/"+qrKey);
 
@@ -95,9 +95,14 @@ public class QRFileService {
         org.springframework.security.core.userdetails.User userDetail =
                 (org.springframework.security.core.userdetails.User) auth.getPrincipal();
 
-        Optional<User> userOp = this.repoUsers.findByUsername(userDetail.getUsername());
+        String username = userDetail.getUsername();
+        Optional<User> userOp = this.repoUsers.findByUsername(username);
 
-        return userOp.get();
+        if(userOp.isEmpty()){
+         throw new BadCredentialsException("Bad Credentials");
+        }else {
+            return userOp.get();
+        }
     }
 
     public boolean deleteQR(String qrKey) throws FileNotFoundException {

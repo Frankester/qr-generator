@@ -22,9 +22,18 @@ import java.util.HashMap;
 public class JwtAuthEntryPoint implements AuthenticationEntryPoint {
 
     private final Logger log = LoggerFactory.getLogger(JwtAuthEntryPoint.class);
-    @Autowired
+
     @Qualifier("handlerExceptionResolver")
-    private HandlerExceptionResolver resolver;
+    private final HandlerExceptionResolver resolver;
+
+    @Autowired
+    public JwtAuthEntryPoint(HandlerExceptionResolver resolver){
+        this.resolver = resolver;
+    }
+
+    public JwtAuthEntryPoint(){
+        this.resolver = null;
+    }
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {

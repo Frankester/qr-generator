@@ -3,6 +3,7 @@ package com.example.api.services;
 import com.example.api.models.User;
 import com.example.api.repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -16,15 +17,20 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
+
+    private final UserRepo repo;
+
     @Autowired
-    UserRepo repo;
+    public UserService(UserRepo repo) {
+        this.repo = repo;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<User> userOp = this.repo.findByUsername(username);
 
         if(userOp.isEmpty()){
-            throw new UsernameNotFoundException("User with the username: \""+ username + "\" not found");
+            throw new BadCredentialsException("Bad Credentials");
         }
 
         User user = userOp.get();
