@@ -32,6 +32,7 @@ services:
       - SPRING.JPA.HIBERNATE.DDL-AUTO=update
       - SERVER.ERROR.INCLUDE-MESSAGE=always
       - APP.JWT.EXPIRATION=86400000
+      - SPRING.PROFILES.ACTIVE=prod
 
     networks:
       - my-app-network
